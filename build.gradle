@@ -1,0 +1,59 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.1'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.asciidoctor.convert' version '1.5.8'
+    id 'java'
+}
+
+group = 'fr.gravendev'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = targetCompatibility = '17'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('snippetsDir', file("build/generated-snippets"))
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-mail:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket:2.6.3'
+    implementation 'javax.inject:javax.inject:1'
+    implementation 'org.commonmark:commonmark:0.18.1'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux:2.6.3'
+
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools:2.6.3'
+
+    runtimeOnly 'io.micrometer:micrometer-registry-prometheus:1.8.2'
+    runtimeOnly 'org.postgresql:postgresql:42.3.1'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:2.6.3'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc:2.0.6.RELEASE'
+}
+
+test {
+    outputs.dir snippetsDir
+    useJUnitPlatform()
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    dependsOn test
+}
