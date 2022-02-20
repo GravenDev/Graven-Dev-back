@@ -1,8 +1,7 @@
 package fr.gravendev.gravendevback.controller.user;
 
 import fr.gravendev.gravendevback.entity.user.User;
-import fr.gravendev.gravendevback.entity.user.UserTagEntry;
-import fr.gravendev.gravendevback.entity.user.UserTags;
+import fr.gravendev.gravendevback.entity.user.tag.UserTagEntry;
 import fr.gravendev.gravendevback.model.user.UserTagModel;
 import fr.gravendev.gravendevback.service.AuthTokenService;
 import fr.gravendev.gravendevback.service.user.UserService;
@@ -41,18 +40,7 @@ public class UserTagsController {
         User user = userService.getUser(discordId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-        return userTagsService.buildModel(userTagsService.getTags(user));
-    }
-
-    @PutMapping
-    public List<UserTagModel> putUserTags(@RequestHeader("Authorization") String authTokenStr,
-                                    @PathVariable("discordId") Long discordId,
-                                    @RequestBody List<UserTagModel> tagModels) {
-        User user = authTokenService.checkAuthentication(authTokenStr, discordId);
-
-        UserTags userTags = userTagsService.setTags(user, tagModels);
-
-        return userTagsService.buildModel(userTags);
+        return userTagsService.buildModel(user);
     }
 
     @PutMapping("/{tagId}")

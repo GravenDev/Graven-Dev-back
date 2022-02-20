@@ -1,5 +1,6 @@
-package fr.gravendev.gravendevback.entity.user;
+package fr.gravendev.gravendevback.entity.user.tag;
 
+import fr.gravendev.gravendevback.entity.user.User;
 import lombok.*;
 
 import javax.persistence.*;
