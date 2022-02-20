@@ -4,6 +4,7 @@ import fr.gravendev.gravendevback.entity.DiscordToken;
 import fr.gravendev.gravendevback.entity.authtoken.AuthToken;
 import fr.gravendev.gravendevback.entity.user.about.AboutInfo;
 import fr.gravendev.gravendevback.entity.user.about.AboutIntro;
+import fr.gravendev.gravendevback.entity.user.role.UserRoles;
 import fr.gravendev.gravendevback.entity.user.tag.UserTags;
 import lombok.*;
 
@@ -31,8 +32,8 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Getter @Setter private UserDiscordInfo discordInfo;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Getter @Setter private UserRoles userRoles;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Getter @Setter private Set<UserRoles> userRoles;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Getter @Setter private Set<UserTags> userTags;

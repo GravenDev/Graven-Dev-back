@@ -1,8 +1,9 @@
-package fr.gravendev.gravendevback.entity.user;
+package fr.gravendev.gravendevback.entity.user.role;
 
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "user_role_entry")
@@ -15,6 +16,9 @@ public class UserRoleEntry {
     @SequenceGenerator(name = "user_role_entry_sequence", sequenceName = "user_role_entry_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_role_entry_sequence")
     @Getter private final Long id = 0L;
+
+    @OneToMany(mappedBy = "userRoleEntry", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Getter @Setter private Set<UserRoles> userRoles;
 
     @Column(nullable = false, unique = true)
     @Getter @Setter private long discordId;

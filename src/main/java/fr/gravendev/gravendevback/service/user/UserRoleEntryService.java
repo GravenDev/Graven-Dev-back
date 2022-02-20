@@ -1,6 +1,6 @@
 package fr.gravendev.gravendevback.service.user;
 
-import fr.gravendev.gravendevback.entity.user.UserRoleEntry;
+import fr.gravendev.gravendevback.entity.user.role.UserRoleEntry;
 import fr.gravendev.gravendevback.repository.user.UserRoleEntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,9 @@
 package fr.gravendev.gravendevback.service.user;
 
 import fr.gravendev.gravendevback.entity.user.User;
-import fr.gravendev.gravendevback.entity.user.UserRoleEntry;
-import fr.gravendev.gravendevback.entity.user.UserRoles;
+import fr.gravendev.gravendevback.entity.user.role.UserRoleEntry;
+import fr.gravendev.gravendevback.entity.user.role.UserRoles;
+import fr.gravendev.gravendevback.entity.user.role.UserRolesKey;
 import fr.gravendev.gravendevback.model.user.UserRoleModel;
 import fr.gravendev.gravendevback.repository.user.UserRolesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserRolesService {
@@ -27,25 +29,28 @@ public class UserRolesService {
     }
 
     public boolean hasRole(User user, String... roles) {
-        return userRolesRepository.existsByUserIdAndUserRoleCodeIn(user.getId(), Arrays.asList(roles));
+        return userRolesRepository.existsByUserIdAndUserRoleEntryCodeIn(user.getId(), Arrays.asList(roles));
     }
 
-    public UserRoles create(Long[] roleIds) {
-        return UserRoles.builder()
-                .userRole(userRoleEntryService.parseRoles(roleIds))
-                .build();
-    }
+    public List<UserRoles> update(User user, Long[] roleIds) {
+        Set<UserRoles> userRoles = userRoleEntryService.parseRoles(roleIds).stream()
+                .map(userRoleEntry -> UserRoles.builder()
+                        .id(UserRolesKey.builder()
+                                .userId(user.getId())
+                                .userRoleId(userRoleEntry.getId())
+                                .build())
+                        .user(user)
+                        .userRoleEntry(userRoleEntry)
+                        .build())
+                .collect(Collectors.toSet());
 
-    public UserRoles update(User user, Long[] roleIds) {
-        UserRoles userRoles = user.getUserRoles();
-
-        userRoles.setUserRole(userRoleEntryService.parseRoles(roleIds));
-
-        return userRolesRepository.save(userRoles);
+        return userRolesRepository.saveAll(userRoles);
     }
 
     public List<UserRoleModel> buildModel(User user) {
-        return buildModel(user.getUserRoles().getUserRole());
+        return buildModel(user.getUserRoles().stream()
+                .map(UserRoles::getUserRoleEntry)
+                .collect(Collectors.toSet()));
     }
 
     public List<UserRoleModel> buildModel(Set<UserRoleEntry> userRoleEntries) {
