@@ -4,6 +4,7 @@ import fr.gravendev.gravendevback.entity.DiscordToken;
 import fr.gravendev.gravendevback.entity.authtoken.AuthToken;
 import fr.gravendev.gravendevback.entity.user.about.AboutInfo;
 import fr.gravendev.gravendevback.entity.user.about.AboutIntro;
+import fr.gravendev.gravendevback.entity.user.tag.UserTags;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,8 +34,8 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Getter @Setter private UserRoles userRoles;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Getter @Setter private UserTags userTags;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Getter @Setter private Set<UserTags> userTags;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Getter @Setter private Set<AboutInfo> aboutInfo;

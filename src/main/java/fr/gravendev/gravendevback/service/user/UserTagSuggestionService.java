@@ -1,7 +1,7 @@
 package fr.gravendev.gravendevback.service.user;
 
 import fr.gravendev.gravendevback.entity.user.User;
-import fr.gravendev.gravendevback.entity.user.UserTagSuggestion;
+import fr.gravendev.gravendevback.entity.user.tag.UserTagSuggestion;
 import fr.gravendev.gravendevback.model.user.UserTagModel;
 import fr.gravendev.gravendevback.repository.user.UserTagSuggestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;

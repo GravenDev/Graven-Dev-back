@@ -5,7 +5,6 @@ import fr.gravendev.gravendevback.entity.authtoken.AuthToken;
 import fr.gravendev.gravendevback.entity.user.User;
 import fr.gravendev.gravendevback.entity.user.UserDiscordInfo;
 import fr.gravendev.gravendevback.entity.user.UserRoles;
-import fr.gravendev.gravendevback.entity.user.UserTags;
 import fr.gravendev.gravendevback.entity.user.about.AboutIntro;
 import fr.gravendev.gravendevback.model.discord.DiscordGuildMemberResponse;
 import fr.gravendev.gravendevback.model.discord.DiscordTokensResponse;
@@ -88,14 +87,13 @@ public class UserService {
         UserDiscordInfo userDiscordInfo = userDiscordInfoService.create(discordUser, discordGuildMember);
         AboutIntro aboutIntro = aboutIntroService.create();
         UserRoles userRoles = userRolesService.create(discordGuildMember.roles());
-        UserTags userTags = userTagsService.create();
 
         User user = User.builder()
                 .authTokens(Set.of(authToken))
                 .discordToken(discordToken)
                 .discordInfo(userDiscordInfo)
                 .userRoles(userRoles)
-                .userTags(userTags)
+                .userTags(Set.of())
                 .aboutIntro(aboutIntro)
                 .build();
 
@@ -104,7 +102,6 @@ public class UserService {
         userDiscordInfo.setUser(user);
         aboutIntro.setUser(user);
         userRoles.setUser(user);
-        userTags.setUser(user);
 
         return userRepository.save(user);
     }
@@ -132,7 +129,7 @@ public class UserService {
                         .map(bannerHash -> "https://cdn.discordapp.com/banners/" + user.getDiscordInfo().getDiscordId() + "/" + bannerHash))
                 .accentColor(user.getDiscordInfo().getAccentColor())
                 .roles(userRolesService.buildModel(user))
-                .tags(userTagsService.buildModel(user.getUserTags()))
+                .tags(userTagsService.buildModel(user))
                 .build();
     }
 
@@ -169,7 +166,7 @@ public class UserService {
                         .map(bannerHash -> "https://cdn.discordapp.com/banners/" + user.getDiscordInfo().getDiscordId() + "/" + bannerHash))
                 .accentColor(user.getDiscordInfo().getAccentColor())
                 .roles(userRolesService.buildModel(user))
-                .tags(userTagsService.buildModel(user.getUserTags()))
+                .tags(userTagsService.buildModel(user))
                 .build();
     }
 }

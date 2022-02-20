@@ -1,6 +1,6 @@
 package fr.gravendev.gravendevback.controller.user;
 
-import fr.gravendev.gravendevback.entity.user.UserTagEntry;
+import fr.gravendev.gravendevback.entity.user.tag.UserTagEntry;
 import fr.gravendev.gravendevback.model.user.UserTagModel;
 import fr.gravendev.gravendevback.service.AuthTokenService;
 import fr.gravendev.gravendevback.service.user.UserTagEntryService;
