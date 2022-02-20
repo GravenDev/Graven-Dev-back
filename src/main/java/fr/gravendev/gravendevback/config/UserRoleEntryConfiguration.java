@@ -1,6 +1,6 @@
 package fr.gravendev.gravendevback.config;
 
-import fr.gravendev.gravendevback.entity.user.UserRoleEntry;
+import fr.gravendev.gravendevback.entity.user.role.UserRoleEntry;
 import fr.gravendev.gravendevback.repository.user.UserRoleEntryRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

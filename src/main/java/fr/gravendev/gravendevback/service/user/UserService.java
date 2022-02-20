@@ -4,7 +4,6 @@ import fr.gravendev.gravendevback.entity.DiscordToken;
 import fr.gravendev.gravendevback.entity.authtoken.AuthToken;
 import fr.gravendev.gravendevback.entity.user.User;
 import fr.gravendev.gravendevback.entity.user.UserDiscordInfo;
-import fr.gravendev.gravendevback.entity.user.UserRoles;
 import fr.gravendev.gravendevback.entity.user.about.AboutIntro;
 import fr.gravendev.gravendevback.model.discord.DiscordGuildMemberResponse;
 import fr.gravendev.gravendevback.model.discord.DiscordTokensResponse;
@@ -86,13 +85,12 @@ public class UserService {
         DiscordToken discordToken = discordTokenService.create(discordTokens);
         UserDiscordInfo userDiscordInfo = userDiscordInfoService.create(discordUser, discordGuildMember);
         AboutIntro aboutIntro = aboutIntroService.create();
-        UserRoles userRoles = userRolesService.create(discordGuildMember.roles());
 
         User user = User.builder()
                 .authTokens(Set.of(authToken))
                 .discordToken(discordToken)
                 .discordInfo(userDiscordInfo)
-                .userRoles(userRoles)
+                .userRoles(Set.of())
                 .userTags(Set.of())
                 .aboutIntro(aboutIntro)
                 .build();
@@ -101,9 +99,12 @@ public class UserService {
         discordToken.setUser(user);
         userDiscordInfo.setUser(user);
         aboutIntro.setUser(user);
-        userRoles.setUser(user);
 
-        return userRepository.save(user);
+        user = userRepository.save(user);
+
+        userRolesService.update(user, discordGuildMember.roles());
+
+        return user;
     }
 
     public User update(User user, AuthToken authToken, DiscordTokensResponse discordTokens, DiscordUserResponse discordUser) {

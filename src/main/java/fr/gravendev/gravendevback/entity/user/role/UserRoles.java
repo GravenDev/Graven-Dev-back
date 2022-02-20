@@ -1,9 +1,9 @@
-package fr.gravendev.gravendevback.entity.user;
+package fr.gravendev.gravendevback.entity.user.role;
 
+import fr.gravendev.gravendevback.entity.user.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "user_roles", indexes = {@Index(columnList = "user_id")})
@@ -12,16 +12,16 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserRoles {
 
-    @Id
-    @SequenceGenerator(name = "user_roles_sequence", sequenceName = "user_roles_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_roles_sequence")
-    @Getter private final Long id = 0L;
+    @EmbeddedId
+    @Getter private UserRolesKey id;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER, optional = false)
+    @MapsId("userId")
     @JoinColumn(nullable = false)
     @Getter @Setter private User user;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER, optional = false)
+    @MapsId("userRoleId")
     @JoinColumn(nullable = false)
-    @Getter @Setter private Set<UserRoleEntry> userRole;
+    @Getter @Setter private UserRoleEntry userRoleEntry;
 }
